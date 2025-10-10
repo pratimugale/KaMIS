@@ -141,8 +141,11 @@ target_include_directories(lib_mmwis PRIVATE ${MMWIS_INCLUDES})
 
 add_dependencies(lib_mmwis libkaffpa)
 
-option(STRUCTION_ENABLE_APPS "enable/disable struction executables")
-add_subdirectory(extern/struction EXCLUDE_FROM_ALL)
+option(STRUCTION_ENABLE_APPS "enable/disable struction executables" ON)
+if(STRUCTION_ENABLE_APPS)
+    add_subdirectory(extern/struction)
+else()
+    add_subdirectory(extern/struction EXCLUDE_FROM_ALL)
 
 add_executable(mmwis "app/mmwis.cpp" $<TARGET_OBJECTS:libkaffpa> 
                                      $<TARGET_OBJECTS:libmapping> 
