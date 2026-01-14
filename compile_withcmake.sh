@@ -14,7 +14,31 @@ rm -rf deploy
 rm -rf build
 mkdir build
 cd build
-cmake ../
+
+# Use Homebrew g++ on macOS, system g++ on Linux
+if [[ "$unamestr" == "Darwin" ]]; then
+    # Try to find Homebrew g++ (g++-15, g++-14, g++-13, etc.)
+    GPP=""
+    GCC=""
+    BREW_PREFIX=$(brew --prefix 2>/dev/null || echo "/usr/local")
+    for version in 15 14 13 12 11; do
+        if [ -f "$BREW_PREFIX/bin/g++-$version" ]; then
+            GPP="$BREW_PREFIX/bin/g++-$version"
+            GCC="$BREW_PREFIX/bin/gcc-$version"
+            echo "Using compiler: $GPP"
+            break
+        fi
+    done
+    if [ -z "$GPP" ]; then
+        echo "Warning: Homebrew g++ not found, using system compiler (may fail)"
+        GPP=$(which g++)
+        GCC=$(which gcc)
+    fi
+    cmake ../ -DCMAKE_C_COMPILER="$GCC" -DCMAKE_CXX_COMPILER="$GPP"
+else
+    cmake ../
+fi
+
 make -j $NCORES
 cd ..
 
