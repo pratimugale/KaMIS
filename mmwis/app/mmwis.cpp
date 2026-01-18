@@ -104,7 +104,7 @@ int run(mmwis::MISConfig &mis_config, graph_access &G, NodeWeight weight_offset)
     evo.perform_mis_search(mis_config, G, independent_set, best_nodes, worse_nodes, solved_exactly, false);
     mmwis::mmwis_log::instance()->print_results();
     if (mis_config.print_log) mmwis::mmwis_log::instance()->write_log();
-    /* if (mis_config.write_graph) graph_io::writeIndependentSet(G, mis_config.output_filename); */
+    if (mis_config.write_graph) graph_io::writeIndependentSet(G, mis_config.output_filename);
     #ifdef NDEBUG
     if(is_IS(G)) {
         int solution_weight = weight_offset;
