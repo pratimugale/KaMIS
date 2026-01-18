@@ -14,13 +14,6 @@ rm -rf deploy
 rm -rf build
 mkdir build
 cd build
-cmake ../
-make -j $NCORES
-cd ..
-
-
-# compile mmwis:
-cd mmwis
 
 # Use Homebrew g++ on macOS, system g++ on Linux
 if [[ "$unamestr" == "Darwin" ]]; then
@@ -46,6 +39,13 @@ else
     cmake ../
 fi
 
+make -j $NCORES
+cd ..
+
+
+# compile mmwis:
+cd mmwis
+./compile.sh
 cd ..
 
 mkdir deploy
